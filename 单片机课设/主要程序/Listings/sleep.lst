@@ -1,0 +1,32 @@
+C51 COMPILER V9.54   SLEEP                                                                 12/15/2019 16:45:29 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SLEEP
+OBJECT MODULE PLACED IN .\Objects\sleep.obj
+COMPILER INVOKED BY: D:\keil_v5\C51\BIN\C51.EXE sleep.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\sle
+                    -ep.lst) TABS(2) OBJECT(.\Objects\sleep.obj)
+
+line level    source
+
+   1          #include "sleep.h"
+   2          void sleep(uint t)//—” ±,∫¡√Îº∂,
+   3          {
+   4   1        uint a,b;
+   5   1        for(a=0;a<t;a++)
+   6   1          for(b=0;b<110;b++)
+   7   1            ;
+   8   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     32    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

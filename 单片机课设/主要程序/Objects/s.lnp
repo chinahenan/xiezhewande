@@ -1,0 +1,8 @@
+".\Objects\main.obj",
+".\Objects\lcd12864.obj",
+".\Objects\ds1302.obj",
+".\Objects\ds18b20.obj",
+".\Objects\at24c02.obj",
+".\Objects\config.obj" 
+TO ".\Objects\s" 
+PRINT(".\Listings\s.m51") RAMSIZE(256) 

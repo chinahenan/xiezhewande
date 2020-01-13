@@ -1,0 +1,631 @@
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN .\Objects\key.obj
+COMPILER INVOKED BY: D:\keil_v5\C51\BIN\C51.EXE key.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\key.l
+                    -st) TABS(2) OBJECT(.\Objects\key.obj)
+
+line level    source
+
+   1          #include "key.h"
+   2          #include "config.h"
+   3          extern uchar buff[10];
+   4          extern uchar IndexHor;
+   5          extern uchar IndexVer;
+   6          extern int tempL;
+   7          extern int tempH;
+   8          extern int temp;
+   9          extern bit AlarmOn;
+  10          extern uchar AlarmTime[3];
+  11          extern uchar ui;
+  12          void KeyPros()
+  13          {
+  14   1        if(!_UP)
+  15   1        {
+  16   2          sleep(10);
+  17   2          if(!_UP)
+  18   2          {
+  19   3            if(IsAlarm)
+*** ERROR C202 IN LINE 19 OF key.c: 'IsAlarm': undefined identifier
+  20   3              IsAlarm=0;//任意键清除闹铃，且不触发其它功能
+*** ERROR C202 IN LINE 20 OF key.c: 'IsAlarm': undefined identifier
+  21   3            else
+  22   3            {
+  23   4              switch(ui)
+  24   4              {
+  25   5                case 1://设置界面则竖向提示符移动
+  26   5                  if(IndexVer==0)
+  27   5                    IndexVer=3;
+  28   5                  else 
+  29   5                    IndexVer--;
+  30   5                  break;
+  31   5                case 2://处于日期设置界面
+  32   5                  switch(IndexHor)
+  33   5                  {
+  34   6                    case 0://若提示符在0位置
+  35   6                    case 1://年的十位百位允许0~9内变化
+  36   6                    case 3://月的个位也能0~9变化
+  37   6                    case 5://日的个位,0~9变化
+  38   6                      if(buff[IndexHor]==9)
+  39   6                        buff[IndexHor]=0;
+  40   6                      else
+  41   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 41 OF key.c: not an lvalue
+  42   6                      break;
+  43   6                    case 2://月,十位只能0,1变化
+  44   6                      if(buff[IndexHor]==1)
+  45   6                        buff[IndexHor]=0;
+  46   6                      else
+  47   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 47 OF key.c: not an lvalue
+  48   6                      break;
+  49   6                    case 4://日的十位,0~3变化
+  50   6                      if(buff[IndexHor]==3)
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 2   
+
+  51   6                        buff[IndexHor]=0;
+  52   6                      else
+  53   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 53 OF key.c: not an lvalue
+  54   6                      break;
+  55   6                    case 6://周的变化,1~7
+  56   6                      if(buff[IndexHor]==7)
+  57   6                        buff[IndexHor]=1;
+  58   6                      else
+  59   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 59 OF key.c: not an lvalue
+  60   6                      break;
+  61   6                  }
+  62   5                  break;
+  63   5                case 3://处于时间设置界面
+  64   5                  switch(IndexHor)
+  65   5                  {
+  66   6                    case 0://若提示符在0位置，时的十位
+  67   6                      if(buff[IndexHor]==2)
+  68   6                        buff[IndexHor]=0;
+  69   6                      else
+  70   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 70 OF key.c: not an lvalue
+  71   6                      break;
+  72   6                    case 1://时的个位
+  73   6                    case 3://分的个位
+  74   6                    case 5://秒的个位
+  75   6                      if(buff[IndexHor]==9)
+  76   6                        buff[IndexHor]=0;
+  77   6                      else
+  78   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 78 OF key.c: not an lvalue
+  79   6                      break;
+  80   6                    case 2://分的十位
+  81   6                    case 4://秒的十位
+  82   6                      if(buff[IndexHor]==5)
+  83   6                        buff[IndexHor]=0;
+  84   6                      else
+  85   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 85 OF key.c: not an lvalue
+  86   6                      break;
+  87   6                  }
+  88   5                  break;
+  89   5                case 4://处于温控范围设置界面
+  90   5                  switch(IndexHor)
+  91   5                  {
+  92   6                    case 0://若提示符在0位置，上限温度符号
+  93   6                    case 5://下限温度符号
+  94   6                      if(buff[IndexHor]==1)
+  95   6                        buff[IndexHor]=0;
+  96   6                      else
+  97   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 97 OF key.c: not an lvalue
+  98   6                      break;
+  99   6                    case 2://十位
+ 100   6                    case 3://个位
+ 101   6                    case 4://小数后一位
+ 102   6                    case 7:
+ 103   6                    case 8:
+ 104   6                    case 9:
+ 105   6                      if(buff[IndexHor]==9)
+ 106   6                        buff[IndexHor]=0;
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 3   
+
+ 107   6                      else
+ 108   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 108 OF key.c: not an lvalue
+ 109   6                      break;
+ 110   6                    case 1:
+ 111   6                    case 6:
+ 112   6                      if(buff[IndexHor]==1)
+ 113   6                        buff[IndexHor]=0;
+ 114   6                      else
+ 115   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 115 OF key.c: not an lvalue
+ 116   6                      break;
+ 117   6                  }
+ 118   5                  break;
+ 119   5                case 5://处于闹钟设置界面
+ 120   5                  switch(IndexHor)
+ 121   5                  {
+ 122   6                    case 0://若提示符在0位置，开关的设置
+ 123   6                      if(buff[IndexHor]==1)
+ 124   6                        buff[IndexHor]=0;
+ 125   6                      else
+ 126   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 126 OF key.c: not an lvalue
+ 127   6                      break;
+ 128   6                    case 1://时的十位
+ 129   6                      if(buff[IndexHor]==2)
+ 130   6                        buff[IndexHor]=0;
+ 131   6                      else
+ 132   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 132 OF key.c: not an lvalue
+ 133   6                      break;
+ 134   6                    case 2://时的个位
+ 135   6                    case 4://分的个位
+ 136   6                    case 6://秒的个位
+ 137   6                      if(buff[IndexHor]==9)
+ 138   6                        buff[IndexHor]=0;
+ 139   6                      else
+ 140   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 140 OF key.c: not an lvalue
+ 141   6                      break;
+ 142   6                    case 3://分的十位
+ 143   6                    case 5://秒的十位
+ 144   6                      if(buff[IndexHor]==5)
+ 145   6                        buff[IndexHor]=0;
+ 146   6                      else
+ 147   6                        buff[IndexHor]++;
+*** ERROR C187 IN LINE 147 OF key.c: not an lvalue
+ 148   6                  }
+ 149   5                  break;
+ 150   5              }
+ 151   4            }
+ 152   3            WriteCom(0x01);//清屏
+ 153   3          }
+ 154   2          while(!_UP);
+ 155   2        }
+ 156   1        
+ 157   1        if(!_DOWN)
+ 158   1        {
+ 159   2          sleep(10);
+ 160   2          if(!_DOWN)
+ 161   2          {
+ 162   3            if(IsAlarm)
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 4   
+
+ 163   3              IsAlarm=0;//任意键清除闹铃
+ 164   3            else
+ 165   3            {
+ 166   4              switch(ui)
+ 167   4              {
+ 168   5                case 1:
+ 169   5                  if(IndexVer==3)
+ 170   5                    IndexVer=0;
+ 171   5                  else 
+ 172   5                    IndexVer++;
+ 173   5                  break;
+ 174   5                case 2://处于日期设置界面
+ 175   5                  switch(IndexHor)
+ 176   5                  {
+ 177   6                    case 0://若提示符在0位置
+ 178   6                    case 1://年的十位百位允许0~9内变化
+ 179   6                    case 3://月的个位也能0~9变化
+ 180   6                    case 5://日的个位,0~9变化
+ 181   6                      if(buff[IndexHor]==0)
+ 182   6                        buff[IndexHor]=9;
+ 183   6                      else
+ 184   6                        buff[IndexHor]--;
+ 185   6                      break;
+ 186   6                    case 2://月,十位只能0,1变化
+ 187   6                      if(buff[IndexHor]==0)
+ 188   6                        buff[IndexHor]=1;
+ 189   6                      else
+ 190   6                        buff[IndexHor]--;
+ 191   6                      break;
+ 192   6                    case 4://日的十位,0~3变化
+ 193   6                      if(buff[IndexHor]==0)
+ 194   6                        buff[IndexHor]=3;
+ 195   6                      else
+ 196   6                        buff[IndexHor]--;
+ 197   6                      break;
+ 198   6                    case 6://周的变化,1~7
+ 199   6                      if(buff[IndexHor]==1)
+ 200   6                      {
+ 201   7                        buff[IndexHor]=7;
+ 202   7                      }
+ 203   6                      else
+ 204   6                      {
+ 205   7                        buff[IndexHor]--;
+ 206   7                      }
+ 207   6                      break;
+ 208   6                  }
+ 209   5                  break;
+ 210   5                case 3://处于时间设置界面
+ 211   5                  switch(IndexHor)
+ 212   5                  {
+ 213   6                    case 0://若提示符在0位置，时的十位
+ 214   6                      if(buff[IndexHor]==0)
+ 215   6                        buff[IndexHor]=2;
+ 216   6                      else
+ 217   6                        buff[IndexHor]--;
+ 218   6                      break;
+ 219   6                    case 1://时的个位
+ 220   6                    case 3://分的个位
+ 221   6                    case 5://秒的个位
+ 222   6                      if(buff[IndexHor]==0)
+ 223   6                        buff[IndexHor]=9;
+ 224   6                      else
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 5   
+
+ 225   6                        buff[IndexHor]--;
+ 226   6                      break;
+ 227   6                    case 2://分的十位
+ 228   6                    case 4://秒的十位
+ 229   6                      if(buff[IndexHor]==0)
+ 230   6                        buff[IndexHor]=5;
+ 231   6                      else
+ 232   6                        buff[IndexHor]--;
+ 233   6                      break;
+ 234   6                  }
+ 235   5                  break;
+ 236   5                case 4://处于温控范围设置界面
+ 237   5                  switch(IndexHor)
+ 238   5                  {
+ 239   6                    case 0://若提示符在0位置，上限温度符号
+ 240   6                    case 5://下限温度符号
+ 241   6                      if(buff[IndexHor]==0)
+ 242   6                        buff[IndexHor]=1;
+ 243   6                      else
+ 244   6                        buff[IndexHor]--;
+ 245   6                      break;
+ 246   6                    case 2://十位
+ 247   6                    case 3://个位
+ 248   6                    case 4://小数后一位
+ 249   6                    case 7:
+ 250   6                    case 8:
+ 251   6                    case 9:
+ 252   6                      if(buff[IndexHor]==0)
+ 253   6                        buff[IndexHor]=9;
+ 254   6                      else
+ 255   6                        buff[IndexHor]--;
+ 256   6                      break;
+ 257   6                    case 1:
+ 258   6                    case 6:
+ 259   6                      if(buff[IndexHor]==0)
+ 260   6                        buff[IndexHor]=1;
+ 261   6                      else
+ 262   6                        buff[IndexHor]--;
+ 263   6                      break;
+ 264   6                  }
+ 265   5                  break;
+ 266   5                case 5://处于闹钟设置界面
+ 267   5                  switch(IndexHor)
+ 268   5                  {
+ 269   6                    case 0://若提示符在0位置，开关的设置
+ 270   6                      if(buff[IndexHor]==0)
+ 271   6                        buff[IndexHor]=1;
+ 272   6                      else
+ 273   6                        buff[IndexHor]--;
+ 274   6                      break;
+ 275   6                    case 1://时的十位
+ 276   6                      if(buff[IndexHor]==0)
+ 277   6                        buff[IndexHor]=2;
+ 278   6                      else
+ 279   6                        buff[IndexHor]--;
+ 280   6                      break;
+ 281   6                    case 2://时的个位
+ 282   6                    case 4://分的个位
+ 283   6                    case 6://秒的个位
+ 284   6                      if(buff[IndexHor]==0)
+ 285   6                        buff[IndexHor]=9;
+ 286   6                      else
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 6   
+
+ 287   6                        buff[IndexHor]--;
+ 288   6                      break;
+ 289   6                    case 3://分的十位
+ 290   6                    case 5://秒的十位
+ 291   6                      if(buff[IndexHor]==0)
+ 292   6                        buff[IndexHor]=5;
+ 293   6                      else
+ 294   6                        buff[IndexHor]--;
+ 295   6                  }
+ 296   5                  break;
+ 297   5              }
+ 298   4            }
+ 299   3            WriteCom(0x01);//清屏;
+ 300   3          }
+ 301   2          while(!_DOWN);
+ 302   2        }
+ 303   1        
+ 304   1        if(!_LEFT)
+ 305   1        {
+ 306   2          sleep(10);
+ 307   2          if(!_LEFT)
+ 308   2          {
+ 309   3            if(IsAlarm)
+ 310   3              IsAlarm=0;//任意键清除闹铃
+ 311   3            else  
+ 312   3            {
+ 313   4              switch(ui)
+ 314   4              {
+ 315   5                case 2://日期设置中的左右移动
+ 316   5                case 5://2和5都是移动6次，就不重复写了
+ 317   5                  if(IndexHor==0)
+ 318   5                    IndexHor=6;
+ 319   5                  else 
+ 320   5                    IndexHor--;
+ 321   5                  break;
+ 322   5                case 3://时间
+ 323   5                  if(IndexHor==0)
+ 324   5                    IndexHor=5;
+ 325   5                  else 
+ 326   5                    IndexHor--;
+ 327   5                  break;
+ 328   5                case 4://温控范围
+ 329   5                  if(IndexHor==0)
+ 330   5                    IndexHor=9;
+ 331   5                  else 
+ 332   5                    IndexHor--;
+ 333   5                  break;
+ 334   5              }
+ 335   4          }
+ 336   3          WriteCom(0x01);//清屏
+ 337   3          }
+ 338   2          while(!_LEFT);
+ 339   2        }
+ 340   1        
+ 341   1        if(!_RIGHT)
+ 342   1        {
+ 343   2          sleep(10);
+ 344   2          if(!_RIGHT)
+ 345   2          {
+ 346   3            if(IsAlarm)
+ 347   3              IsAlarm=0;//任意键清除闹铃
+ 348   3            else
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 7   
+
+ 349   3            {
+ 350   4              switch(ui)
+ 351   4              {
+ 352   5                case 2:
+ 353   5                case 5:
+ 354   5                  if(IndexHor==6)
+ 355   5                    IndexHor=0;
+ 356   5                  else 
+ 357   5                    IndexHor++;
+ 358   5                  break;
+ 359   5                case 3:
+ 360   5                  if(IndexHor==5)
+ 361   5                    IndexHor=0;
+ 362   5                  else 
+ 363   5                    IndexHor++;
+ 364   5                  break;
+ 365   5                case 4://温控范围
+ 366   5                  if(IndexHor==9)
+ 367   5                    IndexHor=0;
+ 368   5                  else 
+ 369   5                    IndexHor++;
+ 370   5                  break;
+ 371   5              }
+ 372   4            }
+ 373   3            WriteCom(0x01);//清屏
+ 374   3          }
+ 375   2          while(!_RIGHT);
+ 376   2        }
+ 377   1        
+ 378   1        if(!_OK)
+ 379   1        {
+ 380   2          sleep(10);
+ 381   2          if(!_OK)
+ 382   2          {
+ 383   3            if(IsAlarm)
+ 384   3              IsAlarm=0;//任意键清除闹铃
+ 385   3            else
+ 386   3            {
+ 387   4              switch(ui)
+ 388   4              {
+ 389   5                case 0://信息界面则
+ 390   5                  IndexVer=IndexHor=0;//使得每次重新进入设置，提示符全部重新指向第0个坐标
+ 391   5                  ui=1; //转到设置界面
+ 392   5                  break;
+ 393   5                case 1://设置界面则
+ 394   5                  ui=2+IndexVer;
+ 395   5                  switch(ui)//对各个设置界面的值给个初始的值
+ 396   5                  {
+ 397   6                    case 2://使日期设置的默认值为当前的进入时的日期
+ 398   6                      buff[0]=TIME[6]/16;
+ 399   6                      buff[1]=TIME[6]&0x0f;//年
+ 400   6                      buff[2]=TIME[4]/16;
+ 401   6                      buff[3]=TIME[4]&0x0f;//月
+ 402   6                      buff[4]=TIME[3]/16;
+ 403   6                      buff[5]=TIME[3]&0x0f;//日
+ 404   6                      buff[6]=TIME[5];//周
+ 405   6                      break;
+ 406   6                    case 3://使时间设置的默认值为当前的时间       
+ 407   6                      buff[0]=TIME[2]/16;
+ 408   6                      buff[1]=TIME[2]&0x0f;//时
+ 409   6                      buff[2]=TIME[1]/16;
+ 410   6                      buff[3]=TIME[1]&0x0f;//分
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 8   
+
+ 411   6                      buff[4]=TIME[0]/16;
+ 412   6                      buff[5]=TIME[0]&0x0f;//秒
+ 413   6                      break;
+ 414   6                    case 4://设置温度上下限时的初始值
+ 415   6                      if(tempH<0)
+ 416   6                        buff[0]=1;//1表示负号，0表示正号
+ 417   6                      else 
+ 418   6                        buff[0]=0;
+ 419   6                      buff[1]=abs(tempH)/10000;//温度百位
+ 420   6                      buff[2]=abs(tempH)%10000/1000;//十位
+ 421   6                      buff[3]=abs(tempH)%1000/100;//个位
+ 422   6                      buff[4]=abs(tempH)%100/10;//小数后一位
+ 423   6                      if(tempL<0)
+ 424   6                        buff[5]=1;//1表示负号，0表示正号
+ 425   6                      else 
+ 426   6                        buff[5]=0;
+ 427   6                      buff[6]=abs(tempL)/10000;//温度百位
+ 428   6                      buff[7]=abs(tempL)%10000/1000;//十位
+ 429   6                      buff[8]=abs(tempL)%1000/100;//个位
+ 430   6                      buff[9]=abs(tempL)%100/10;//小数后一位
+ 431   6                      break;
+ 432   6                    case 5://获取当前设置闹钟值放入设置显示的初始值
+ 433   6                      buff[0]=AlarmOn;
+ 434   6                      buff[1]=AlarmTime[2]/16;
+ 435   6                      buff[2]=AlarmTime[2]&0x0f;
+ 436   6                      buff[3]=AlarmTime[1]/16;
+ 437   6                      buff[4]=AlarmTime[1]&0x0f;
+ 438   6                      buff[5]=AlarmTime[0]/16;
+ 439   6                      buff[6]=AlarmTime[0]&0x0f;
+ 440   6                      break;
+ 441   6                  }
+ 442   5                  break;
+ 443   5                case 2://处于日期设置界面按下确定?
+ 444   5                  if(((buff[2]*16)|buff[3])<=0x12&&((buff[4]*16)|buff[5])<=0x31&&((buff[2]*16)|buff[3])!=0&&((buff[4]*
+             -16)|buff[5])!=0)//日、月不合要求不能确定
+ 445   5                  {
+ 446   6                    TIME[6]=(buff[0]*16)|buff[1];//把设置的值换算成日期存着,年
+ 447   6                    TIME[4]=(buff[2]*16)|buff[3];//月
+ 448   6                    TIME[3]=(buff[4]*16)|buff[5];//日
+ 449   6                    TIME[5]=buff[6];//周
+ 450   6                    Ds1302Write(0x8E,0X00);//关闭写保护
+ 451   6                    Ds1302Write(0x86,TIME[3]);//写入日期到DS1302
+ 452   6                    Ds1302Write(0x88,TIME[4]);
+ 453   6                    Ds1302Write(0x8a,TIME[5]);
+ 454   6                    Ds1302Write(0x8c,TIME[6]);
+ 455   6                    Ds1302Write(0x8E,0x80);    //打开写保护功能
+ 456   6                    WriteCom(0x01);//提示设置成功
+ 457   6                    LcdPrint(1,2,"设置成功！");
+ 458   6                    sleep(800);//等待显示
+ 459   6                    WriteCom(0x01);
+ 460   6                    ui=0;//回到主界面
+ 461   6                  }else
+ 462   5                  {
+ 463   6                    WriteCom(0x01);//清屏
+ 464   6                    LcdPrint(1,2,"错误的值！");
+ 465   6                    sleep(800);//等待显示
+ 466   6                    WriteCom(0x01);
+ 467   6                  }
+ 468   5                  break;
+ 469   5                case 3://处于时间设置的界面
+ 470   5                  if((buff[0]*16|buff[1])<=0x23)//不合要求不能确定，只检查小时，因为分和秒不可能出错
+ 471   5                  {
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 9   
+
+ 472   6                    TIME[2]=(buff[0]*16)|buff[1];//时
+ 473   6                    TIME[1]=(buff[2]*16)|buff[3];//分
+ 474   6                    TIME[0]=(buff[4]*16)|buff[5];//秒
+ 475   6                    Ds1302Write(0x8E,0X00);//关闭写保护
+ 476   6                    Ds1302Write(0x80,TIME[0]);//写入时间到DS1302
+ 477   6                    Ds1302Write(0x82,TIME[1]);
+ 478   6                    Ds1302Write(0x84,TIME[2]);
+ 479   6                    Ds1302Write(0x8E,0x80);    //打开写保护功能
+ 480   6                    WriteCom(0x01);//提示设置成功
+ 481   6                    LcdPrint(1,2,"设置成功！");
+ 482   6                    sleep(800);//等待显示
+ 483   6                    WriteCom(0x01);
+ 484   6                    ui=0;//回到主界面
+ 485   6                  }else
+ 486   5                  {
+ 487   6                    WriteCom(0x01);//清屏
+ 488   6                    LcdPrint(1,2,"错误的值！");
+ 489   6                    sleep(800);//等待显示
+ 490   6                    WriteCom(0x01);
+ 491   6                  }
+ 492   5                  break;
+ 493   5                case 4://处于温度上限设置界面
+ 494   5                  if(!buff[0])//对温度正负判断
+ 495   5                    tempH=buff[1]*10000+buff[2]*1000+buff[3]*100+buff[4]*10;
+ 496   5                  else
+ 497   5                    tempH=-(buff[1]*10000+buff[2]*1000+buff[3]*100+buff[4]*10);
+ 498   5                  if(!buff[5])
+ 499   5                    tempL=buff[6]*10000+buff[7]*1000+buff[8]*100+buff[9]*10;
+ 500   5                  else
+ 501   5                    tempL=-(buff[6]*10000+buff[7]*1000+buff[8]*100+buff[9]*10);
+ 502   5                  if(tempH<tempL)//如果大小反了，交换两者
+ 503   5                  {
+ 504   6                    SWAP(tempH,tempL);
+ 505   6                  }
+ 506   5                  TR0=0;
+ 507   5                  At24c02Write(5,tempH>>8);//存储温度上限高八位
+ 508   5                  sleep(10);
+ 509   5                  At24c02Write(6,tempH&0xff);//存储温度上限低八位
+ 510   5                  sleep(10);
+ 511   5                  At24c02Write(7,tempL>>8);//存储温度下限高八位
+ 512   5                  sleep(10);
+ 513   5                  At24c02Write(8,tempL&0xff);//存储温度下限低八位
+ 514   5                  sleep(10);
+ 515   5                  TR0=1;
+ 516   5                  WriteCom(0x01);//提示设置成功
+ 517   5                  LcdPrint(1,2,"设置成功！");
+ 518   5                  sleep(800);//等待显示
+ 519   5                  WriteCom(0x01);
+ 520   5                  ui=0;//回到主界面
+ 521   5                  break;
+ 522   5                case 5://处于闹钟设置界面
+ 523   5                  if((buff[1]*16|buff[2])<=0x23)//不合要求不能确定，只检查小时，因为分和秒在限制下可能出错
+ 524   5                  {
+ 525   6                    AlarmOn=buff[0];
+ 526   6                    AlarmTime[2]=buff[1]*16|buff[2];
+ 527   6                    AlarmTime[1]=buff[3]*16|buff[4];
+ 528   6                    AlarmTime[0]=buff[5]*16|buff[6];
+ 529   6                    TR0=0;
+ 530   6                    At24c02Write(1,AlarmTime[0]);
+ 531   6                    sleep(10);
+ 532   6                    At24c02Write(2,AlarmTime[1]);
+ 533   6                    sleep(10);
+C51 COMPILER V9.54   KEY                                                                   12/24/2019 20:04:37 PAGE 10  
+
+ 534   6                    At24c02Write(3,AlarmTime[2]);
+ 535   6                    sleep(10);
+ 536   6                    At24c02Write(4,AlarmOn);
+ 537   6                    sleep(10);
+ 538   6                    TR0=1;
+ 539   6                    WriteCom(0x01);//提示设置成功
+ 540   6                    LcdPrint(1,2,"设置成功！");
+ 541   6                    sleep(800);//等待显示
+ 542   6                    WriteCom(0x01);
+ 543   6                    ui=0;//回到主界面
+ 544   6                  }else
+ 545   5                  {
+ 546   6                    WriteCom(0x01);//清屏
+ 547   6                    LcdPrint(1,2,"错误的值！");
+ 548   6                    sleep(800);//等待显示
+ 549   6                    WriteCom(0x01);
+ 550   6                  }
+ 551   5                  break;
+ 552   5              }
+ 553   4            }
+ 554   3            WriteCom(0x01);//清屏
+ 555   3          }
+ 556   2          while(!_OK);
+ 557   2        }
+ 558   1        
+ 559   1        if(!_BACK)
+ 560   1        {
+ 561   2          sleep(10);
+ 562   2          if(!_BACK)
+ 563   2          {
+ 564   3            if(IsAlarm)
+ 565   3              IsAlarm=0;//任意键清除闹铃
+ 566   3            else 
+ 567   3            {
+ 568   4              IndexHor=0;//每次返回界面都使横向移动的提示符清零
+ 569   4              switch(ui)
+ 570   4              {
+ 571   5                case 1://若为设置界面
+ 572   5                  ui=0;//转为信息界面
+ 573   5                  break;
+ 574   5                case 2:
+ 575   5                case 3:
+ 576   5                case 4://2/3/4/5/界面的判断相同
+ 577   5                case 5:ui=1;break;//若在设置什么值，返回到设置界面
+ 578   5              } 
+ 579   4            }
+ 580   3            WriteCom(0x01);//清屏
+ 581   3          }
+ 582   2          while(!_BACK);
+ 583   2        }
+ 584   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  16 ERROR(S)
